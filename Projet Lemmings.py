@@ -1,6 +1,6 @@
 class jeu():
-    def __init__(self):
-        self.__grotte = []
+    def __init__(self, grotte):
+        self.__grotte = grotte
 
     def affiche(self):
         for i in range(len(self.__grotte)):
