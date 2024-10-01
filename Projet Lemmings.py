@@ -1,4 +1,22 @@
+class Lemming():
+    """Cette classe gère le comportement des lemmings dans le jeu"""
+    def __init__(self):
+        self.l = 0
+        self.c = 0
+        self.d = 1
+    
+    def __str__(self):   
+        return ">" if self.d == 1 else "<"
+    
+    def action(self):
+        pass
+
+    def sort(self):
+        pass
+
+
 class jeu():
+    """Cette classe gère le jeu"""
     def __init__(self, grotte):
         self.__grotte = grotte
 
