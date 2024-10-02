@@ -65,6 +65,12 @@ class jeu():
         pass #chai pas quoi faire encore
 
     def demarre(self):
+        
+        for i in range(len(self.grotte[0])):
+            case_actuelle = self.grotte[0][i]
+            if case_actuelle.libre():
+                self.liste_lemming.append(Lemming(0, i, self))
+                
         while True:
             action = input("l pour ajouter un lemming, q pour quitter, juste entrer pour continuer")
             
