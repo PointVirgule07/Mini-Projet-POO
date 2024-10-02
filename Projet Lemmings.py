@@ -1,6 +1,6 @@
 class Case:
     ''' classe qui désigne une case du jeu.
-    Prend en paramètres le type de terrain en chaine de caractère (mur, vide, sortie)
+    Prend en paramètres le type de terrain en chaine de caractère (mur : "▇", vide : " ", sortie : "✿")
     et si un lemming est présent de base ou non, renvoie None s'il la vase est vide.
     '''
   
@@ -9,12 +9,7 @@ class Case:
         self.lemming = lemming
 
     def __str__(self):
-        if self.terrain == "mur":
-            return "▇"
-        elif self.terrain == "vide":
-            return " "
-        elif self.terrain == "sortie":
-            return "✿"
+        return self.terrain
 
     def libre(self):
         ''' Renvoie True si la case est vide et False dans le cas contraire
