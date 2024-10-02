@@ -1,6 +1,6 @@
 class Case:
     ''' classe qui désigne une case du jeu.
-    Prend en paramètres le type de terrain en chaine de caractère (mur, vide, sortie)
+    Prend en paramètres le type de terrain en chaine de caractère (mur : "▇", vide : " ", sortie : "✿")
     et si un lemming est présent de base ou non, renvoie None s'il la vase est vide.
     '''
   
@@ -8,13 +8,11 @@ class Case:
         self.terrain = terrain
         self.lemming = lemming
 
-    def __self__(self):
-        if self.terrain == "mur":
-            return "▇"
-        elif self.terrain == "vide":
-            return " "
-        elif self.terrain == "sortie":
-            return "✿"
+    def __str__(self):
+        if self.lemming == None: 
+            return self.terrain
+        else:
+            print(self.lemming)
 
     def libre(self):
         ''' Renvoie True si la case est vide et False dans le cas contraire
@@ -33,3 +31,57 @@ class Case:
         Prend en paramètre un lemming et l'associe à cette case
         '''
         self.lemming = lem
+
+class Lemming():
+    """Cette classe gère le comportement des lemmings dans le jeu"""
+    def __init__(self, l, c, j):
+        self.l = l
+        self.c = c
+        self.j = j
+    
+    def __str__(self):   
+        return ">" if self.d == 1 else "<"
+    
+    def action(self):
+        pass
+
+    def sort(self):
+        pass
+
+
+class jeu():
+    """Cette classe gère le jeu"""
+    def __init__(self, grotte):
+        self.__grotte = grotte
+        self.liste_lemming = []
+    
+    
+    
+    def affiche(self):
+        for i in range(len(self.__grotte)):
+            print(self.__grotte[i])
+    
+    def tour(self):
+        pass
+        
+        
+    def demarre(self):
+        
+        for i in range(len(self.grotte[0])):
+            case_actuelle = self.grotte[0][i]
+            if case_actuelle.libre():
+                self.liste_lemming.append(Lemming(0, i, self))
+                
+        
+        while True:
+            action = input("l pour ajouter un lemming, q pour quitter, juste entrer pour continuer")
+            
+            if action == "l":
+                #ajouter un lemming
+                pass
+
+            elif action == "q":
+                break 
+
+            self.tour()
+            self.affiche()
