@@ -9,7 +9,10 @@ class Case:
         self.lemming = lemming
 
     def __str__(self):
-        return self.terrain
+        if self.lemming == None: 
+            return self.terrain
+        else:
+            print(self.lemming)
 
     def libre(self):
         ''' Renvoie True si la case est vide et False dans le cas contraire
