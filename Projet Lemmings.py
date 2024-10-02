@@ -55,6 +55,12 @@ class jeu():
         self.__grotte = grotte
 
     def affiche(self):
+    for k in range(len(self.__grotte)):
+        print("")
+        for i in range(len(self.__grotte[k])):
+            print(self.__grotte[k][i], end="", sep="")
+
+
         for i in range(len(self.__grotte)):
             print(self.__grotte[i])
     
