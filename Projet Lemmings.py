@@ -1,3 +1,6 @@
+#j'ecris ça depuis mon tél mwahahahaha 
+
+
 class Case:
     ''' classe qui désigne une case du jeu.
     Prend en paramètres le type de terrain en chaine de caractère (mur : "▇", vide : " ", sortie : "✿")
