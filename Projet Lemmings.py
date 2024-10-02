@@ -59,18 +59,18 @@ class jeu():
         self.__grotte = grotte
 
     def affiche(self):
-    for k in range(len(self.__grotte)):
-        print("")
-        for i in range(len(self.__grotte[k])):
-            print(self.__grotte[k][i], end="", sep="")
+        for k in range(len(self.__grotte)):
+            print("")
+            for i in range(len(self.__grotte[k])):
+                print(self.__grotte[k][i], end="", sep="")
     
     def tour(self):
         pass #chai pas quoi faire encore
 
     def demarre(self):
         
-        for i in range(len(self.grotte[0])):
-            case_actuelle = self.grotte[0][i]
+        for i in range(len(self.__grotte[0])):
+            case_actuelle = self.__grotte[0][i]
             if case_actuelle.libre():
                 self.liste_lemming.append(Lemming(0, i, self))
                 
