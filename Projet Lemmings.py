@@ -8,7 +8,7 @@ class Case:
         self.terrain = terrain
         self.lemming = lemming
 
-    def __self__(self):
+    def __str__(self):
         if self.terrain == "mur":
             return "▇"
         elif self.terrain == "vide":
