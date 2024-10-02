@@ -59,10 +59,6 @@ class jeu():
         print("")
         for i in range(len(self.__grotte[k])):
             print(self.__grotte[k][i], end="", sep="")
-
-
-        for i in range(len(self.__grotte)):
-            print(self.__grotte[i])
     
     def tour(self):
         pass #chai pas quoi faire encore
@@ -93,3 +89,5 @@ jeu = jeu([
     [' ', ' ', ' ', ' ', ' ', ' ', ' ', '#', '#', '#', '#', ' ', ' ',' ',' ']   
 ]
 )
+
+jeu.affiche()
