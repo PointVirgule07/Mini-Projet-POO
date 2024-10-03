@@ -1,32 +1,37 @@
-class Lemming():
-    """Cette classe gère le comportement des lemmings dans le jeu"""
-    def __init__(self, l, c, j):
-        self.l = l
-        self.c = c
-        self.j = j
-        self.d = 1
-    
-    def __str__(self):   
-        return ">" if self.d == 1 else "<"
-    
-    def action(self):
-        if self.j.grotte[self.l][self.c].get_terrain() == "0":
-            self.sort()
-            return
-        
-        if self.j.grotte[self.l+1][self.c].libre():
-            self.j.grotte[self.l][self.c].depart()
-            self.j.grotte[self.l+1][self.c].arrivee(self)
-            self.l += 1
+class Lemming:
+    """Classe représentant un lemming."""
 
-        elif self.j.grotte[self.l][self.c+self.d].libre():
-            self.j.grotte[self.l][self.c].depart()
-            self.j.grotte[self.l][self.c+self.d].arrivee(self)
-            self.c += self.d
+    def __init__(self, ligne, colonne, jeu):
+        self.ligne = ligne
+        self.colonne = colonne
+        self.jeu = jeu
+        self.direction = 1  # Direction : 1 pour droite, -1 pour gauche
 
+    def __str__(self):
+        """Renvoie une représentation du lemming."""
+        if self.direction == 1:
+            return ">"
         else:
-            self.d *= -1
-        
-    def sort(self):
-        self.j.grotte[self.l][self.c].depart()
-        self.j.liste_lemming.pop(self.j.tour_actuel)
+            return "<"
+
+    def action(self):
+        """Effectue l'action du lemming selon sa situation."""
+        if self.jeu.grotte[self.ligne][self.colonne].get_terrain() == "0":
+            self.sortir()
+            return
+
+        if self.jeu.grotte[self.ligne + 1][self.colonne].est_libre():
+            self.jeu.grotte[self.ligne][self.colonne].retirer_lemming()
+            self.jeu.grotte[self.ligne + 1][self.colonne].ajouter_lemming(self)
+            self.ligne += 1
+        elif self.jeu.grotte[self.ligne][self.colonne + self.direction].est_libre():
+            self.jeu.grotte[self.ligne][self.colonne].retirer_lemming()
+            self.colonne += self.direction
+            self.jeu.grotte[self.ligne][self.colonne].ajouter_lemming(self)
+        else:
+            self.direction *= -1
+
+    def sortir(self):
+        """Fait sortir le lemming de la grotte."""
+        self.jeu.grotte[self.ligne][self.colonne].retirer_lemming()
+        self.jeu.liste_lemming.remove(self)
