@@ -1,18 +1,23 @@
 from Case import Case
 from Lemming import Lemming
+from generateur import GenerateurLabyrinthe
+from random import randint
 
 class Jeu:
     """Classe principale du jeu des lemmings."""
 
-    def __init__(self, fichier):
-        self.grotte = self.charger_grotte(fichier)
+    def __init__(self, largeur, hauteur):
+        self.grotte = self.charger_grotte(largeur, hauteur)
         self.liste_lemming = []
         self.tour_actuel = 0
 
-    def charger_grotte(self, fichier):
-        """Charge la grotte à partir d'un fichier texte."""
-        with open(fichier, "r") as f:
-            return [[Case(c) for c in ligne.strip()] for ligne in f]
+    def charger_grotte(self, largeur, hauteur):
+        """Génère une grotte (labyrinthe) avec un générateur au lieu de la charger d'un fichier."""
+        generateur = GenerateurLabyrinthe(largeur, hauteur)  # Utilise le générateur de labyrinthe
+        labyrinthe = generateur.generer()  # Génère le labyrinthe
+
+        # Conversion du labyrinthe généré en une matrice de Case
+        return [[Case(c) for c in ligne] for ligne in labyrinthe]
 
     def ajout_lemming(self):
         """Ajoute un lemming à l'entrée de la grotte."""
@@ -29,15 +34,14 @@ class Jeu:
             print("".join([str(case) for case in ligne]))
 
     def tour(self):
-        """Effectue un tour de jeu tout en évitant les erreurs avec une liste vide."""
+        """Effectue un tour de jeu."""
         if not self.liste_lemming:
-            return  # Si aucun lemming, on quitte la méthode pour éviter toute erreur.
-
-        self.liste_lemming[self.tour_actuel].action() #Effectuer l'action du lemming actuel
+            return  # Si aucun lemming, on quitte la méthode.
+        
+        self.liste_lemming[self.tour_actuel].action()
         self.tour_actuel += 1
 
-        # S'assurer que tour_actuel reste dans les limites de la liste
-        if self.liste_lemming:  # Vérification que la liste n'est pas vide après l'action
+        if self.liste_lemming:
             self.tour_actuel %= len(self.liste_lemming)
 
     def demarrer(self):
@@ -59,6 +63,8 @@ class Jeu:
                 self.tour()
 
 
-# Lancement du jeu
-jeu = Jeu("ascii_art_list.txt")
+# Test du jeu avec un labyrinthe généré
+largeur = 15
+hauteur = 15
+jeu = Jeu(largeur, hauteur)
 jeu.demarrer()

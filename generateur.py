@@ -52,11 +52,3 @@ class GenerateurLabyrinthe:
         for ligne in self.labyrinthe:
             print("".join(ligne))
 
-
-# Utilisation du générateur
-largeur = 15
-hauteur = 15
-generateur = GenerateurLabyrinthe(largeur, hauteur)
-labyrinthe = generateur.generer()
-print(labyrinthe)
-
