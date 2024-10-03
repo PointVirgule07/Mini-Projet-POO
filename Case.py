@@ -1,4 +1,4 @@
-class Case:
+class Case: #patate
     """
     Classe représentant une case du jeu.
 
