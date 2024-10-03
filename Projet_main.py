@@ -1,8 +1,8 @@
 from Case import Case
 from Lemming import Lemming
 
-class jeu():
 
+class jeu():
     def __init__(self, grotte):
         """
         Constructeur de la classe jeu. 
@@ -16,6 +16,16 @@ class jeu():
         self.liste_lemming = []
          # Compteur de tours de jeu
         self.tour_actuel = 0 
+
+    def ajout_lem_entree(self):
+        # Ajout d'un premier lemming dans la première ligne de la grotte
+        for i in range(len(self.grotte[0])):
+            case_actuelle = self.grotte[0][i]
+            if case_actuelle.libre():
+                Lem = Lemming(0, i, self)  # Crée un nouveau lemming
+                self.liste_lemming.append(Lem)  # Ajoute le lemming à la liste
+                case_actuelle.arrivee(Lem)  # Place le lemming dans la case
+    
     def affiche(self):
         """
         Affiche l'état actuel de la grotte (grille) sur la console.
@@ -32,7 +42,10 @@ class jeu():
         Fonction placeholder pour gérer le tour d'un lemming ou d'autres événements du jeu.
         À implémenter : déplacements des lemmings et autres interactions.
         """
-        pass  # Le contenu de cette méthode est à implémenter plus tard
+        self.liste_lemming[self.tour_actuel].action()
+        self.tour_actuel += 1
+        self.tour_actuel %= len(self.liste_lemming)
+        print(self.tour_actuel)
 
     def demarre(self):
         """
@@ -43,32 +56,30 @@ class jeu():
         - Demande à l'utilisateur des actions comme ajouter un lemming ou quitter le jeu.
         - Traite chaque tour de jeu.
         """
-        # Ajout d'un premier lemming dans la première ligne de la grotte
-        for i in range(len(self.grotte[0])):
-            case_actuelle = self.grotte[0][i]
-            if case_actuelle.libre():
-                Lem = Lemming(0, i, self)  # Crée un nouveau lemming
-                self.liste_lemming.append(Lem)  # Ajoute le lemming à la liste
-                case_actuelle.arrivee(Lem)  # Place le lemming dans la case
+        
+        self.ajout_lem_entree()  # Ajoute un premier lemming dans la grotte
 
         # Boucle principale du jeu
         est_en_jeu = True
         while est_en_jeu:
             # Affiche l'état actuel de la grotte
             self.affiche()
-
             # Demande à l'utilisateur ce qu'il veut faire
             action = input("l pour ajouter un lemming, q pour quitter, juste entrer pour continuer: ")
+            
 
             if action == "l":
-                # Placeholder pour ajouter un nouveau lemming (à implémenter)
-                pass
+                self.ajout_lem_entree()  # Ajoute un lemming à la liste
 
             elif action == "q":
                 est_en_jeu = False  # Quitte la boucle et termine le jeu
 
             # Lance le traitement d'un tour (par exemple déplacement des lemmings)
-            self.tour()
+            elif action == "":
+                self.tour()
+            
+            else:
+                print("Commande non reconnue, veuillez réessayer.")
 
 
 # Création d'une instance de jeu avec une grotte (grille) prédéfinie

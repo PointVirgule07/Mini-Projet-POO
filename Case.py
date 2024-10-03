@@ -15,7 +15,10 @@ class Case:
         else:
             return self.lemming.__str__()
             
-
+    def get_terrain(self):
+        ''' Renvoie le type de terrain de la case '''
+        return self.__terrain
+    
     def libre(self):
         ''' Renvoie True si la case est vide et False dans le cas contraire'''
         return self.lemming == None and (self.__terrain != "#")
@@ -31,3 +34,4 @@ class Case:
         Prend en paramètre un lemming et l'associe à cette case
         '''
         self.lemming = lem
+    

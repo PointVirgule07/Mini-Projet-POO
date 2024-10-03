@@ -1,5 +1,3 @@
-from Jeu import Jeu
-
 class Lemming():
     """Cette classe gère le comportement des lemmings dans le jeu"""
     def __init__(self, l, c, j):
@@ -12,19 +10,23 @@ class Lemming():
         return ">" if self.d == 1 else "<"
     
     def action(self):
-        if Jeu.grotte[self.l+1][self.c].libre():
-            Jeu.grotte[self.l][self.c].depart()
-            Jeu.grotte[self.l+1][self.c].arrivee(self.)
+        if self.j.grotte[self.l][self.c].get_terrain() == "0":
+            self.sort()
+            return
+        
+        if self.j.grotte[self.l+1][self.c].libre():
+            self.j.grotte[self.l][self.c].depart()
+            self.j.grotte[self.l+1][self.c].arrivee(self)
             self.l += 1
 
-        elif Jeu.grotte[self.l][self.c+self.d].libre():
-            Jeu.grotte[self.l][self.c].depart()
-            Jeu.grotte[self.l][self.c+self.d].arrivee(self)
+        elif self.j.grotte[self.l][self.c+self.d].libre():
+            self.j.grotte[self.l][self.c].depart()
+            self.j.grotte[self.l][self.c+self.d].arrivee(self)
             self.c += self.d
 
         else:
             self.d *= -1
         
     def sort(self):
-        case.depart()
-        Jeu.liste_lemming.pop(Jeu.tour_actuel)
+        self.j.grotte[self.l][self.c].depart()
+        self.j.liste_lemming.pop(self.j.tour_actuel)
