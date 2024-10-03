@@ -74,8 +74,7 @@ class Jeu:
 
             else:
                 self.tour()  # Effectue le tour de jeu pour le lemming actuel
-
-
+                
 # Lancement du jeu
 jeu = Jeu("ascii_art_list.txt")  # Initialise le jeu avec le fichier de grotte
 jeu.demarrer()  # Démarre le jeu
