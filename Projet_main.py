@@ -46,12 +46,15 @@ class jeu():
         Fonction placeholder pour gérer le tour d'un lemming ou d'autres événements du jeu.
         À implémenter : déplacements des lemmings et autres interactions.
         """
-        
-        self.liste_lemming[self.tour_actuel].action()
+
         if len(self.liste_lemming) > 0:
+            self.liste_lemming[self.tour_actuel].action()
             self.tour_actuel += 1
+        if len(self.liste_lemming) > 0:
             self.tour_actuel %= len(self.liste_lemming)
-            print(self.tour_actuel)
+            
+        print(self.tour_actuel)
+
 
     def demarre(self):
         """
@@ -75,6 +78,8 @@ class jeu():
             
 
             if action == "l":
+                if len (self.liste_lemming) == 0:
+                    self.tour_actuel = 0
                 self.ajout_lem_entree()  # Ajoute un lemming à la liste
 
             elif action == "q":
