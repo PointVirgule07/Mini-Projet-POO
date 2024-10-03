@@ -12,8 +12,8 @@ class Case:
     """
 
     def __init__(self, terrain, lemming=None):
-        self.__terrain = terrain  # Type de terrain de la case
-        self.lemming = lemming  # Référence au lemming, None par défaut
+        self.__terrain = terrain 
+        self.lemming = lemming 
 
     def __str__(self):
         """Renvoie une représentation de la case."""
@@ -34,7 +34,7 @@ class Case:
         """Retire le lemming présent dans la case et le renvoie."""
         temp = self.lemming  # Stocke temporairement le lemming
         self.lemming = None  # Retire le lemming de la case
-        return temp  # Retourne le lemming retiré
+        return temp 
 
     def ajouter_lemming(self, lemming):
         """Ajoute un lemming à cette case."""
