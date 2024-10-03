@@ -1,4 +1,4 @@
-class Case:
+class Case: 
     """
     Classe représentant une case du jeu.
 
