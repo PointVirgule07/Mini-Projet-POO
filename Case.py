@@ -1,37 +1,41 @@
-class Case:
-    ''' classe qui désigne une case du jeu.
-    Prend en paramètres le type de terrain en chaine de caractère (mur : "▇", vide : " ", sortie : "✿")
-    et si un lemming est présent de base ou non, renvoie None s'il la vase est vide.
-    '''
-  
-    def __init__(self, terrain, lemming = None):
-        self.__terrain = terrain
-        self.lemming = lemming
+class Case: 
+    """
+    Classe représentant une case du jeu.
+
+    Chaque case peut contenir un terrain (ex : mur, espace libre, sortie)
+    et éventuellement un lemming. Elle gère les interactions avec le lemming
+    qui se déplace sur elle.
+
+    Attributs :
+    - terrain : le type de terrain de la case (ex: '#', '.', '0').
+    - lemming : une référence au lemming qui occupe la case (None si vide).
+    """
+
+    def __init__(self, terrain, lemming=None):
+        self.__terrain = terrain 
+        self.lemming = lemming 
 
     def __str__(self):
-        ''' Renvoie une représentation en chaîne de caractères de la case '''
+        """Renvoie une représentation de la case."""
         if self.lemming is None:
-            return self.__terrain
+            return self.__terrain  # Renvoie le symbole du terrain si pas de lemming
         else:
-            return self.lemming.__str__()
-            
+            return self.lemming.__str__()  # Renvoie la représentation du lemming
+
     def get_terrain(self):
-        ''' Renvoie le type de terrain de la case '''
-        return self.__terrain
-    
-    def libre(self):
-        ''' Renvoie True si la case est vide et False dans le cas contraire'''
-        return self.lemming == None and (self.__terrain != "#")
+        """Renvoie le type de terrain de la case."""
+        return self.__terrain  # Retourne le type de terrain (mur, libre, sortie)
 
-    def depart(self):
-        ''' Suprimme le lemming present dans la case et le renvoie'''
-        temp = self.lemming 
-        self.lemming = None
-        return temp
+    def est_libre(self):
+        """Renvoie True si la case est libre, False sinon."""
+        return self.lemming is None and self.__terrain != "#"
 
-    def arrivee(self, lem):
-        ''' Permet d'ajouter un lemming dans cette case
-        Prend en paramètre un lemming et l'associe à cette case
-        '''
-        self.lemming = lem
-    
+    def retirer_lemming(self):
+        """Retire le lemming présent dans la case et le renvoie."""
+        temp = self.lemming  # Stocke temporairement le lemming
+        self.lemming = None  # Retire le lemming de la case
+        return temp 
+
+    def ajouter_lemming(self, lemming):
+        """Ajoute un lemming à cette case."""
+        self.lemming = lemming
