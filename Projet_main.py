@@ -53,7 +53,8 @@ class jeu():
                 break  # Arrête l'ajout une fois un lemming placé 
 
         # Boucle principale du jeu
-        while True:
+        est_en_jeu = True
+        while est_en_jeu:
             # Affiche l'état actuel de la grotte
             self.affiche()
 
@@ -65,7 +66,7 @@ class jeu():
                 pass
 
             elif action == "q":
-                break  # Quitte la boucle et termine le jeu
+                est_en_jeu = False  # Quitte la boucle et termine le jeu
 
             # Lance le traitement d'un tour (par exemple déplacement des lemmings)
             self.tour()
