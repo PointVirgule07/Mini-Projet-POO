@@ -2,7 +2,7 @@ from Case import Case
 from Lemming import Lemming
 from generateur import GenerateurLabyrinthe
 from random import randint
-
+#sa mère la pute
 class Jeu:
     """Classe principale du jeu des lemmings."""
 
