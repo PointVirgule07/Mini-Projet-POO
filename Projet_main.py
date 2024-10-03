@@ -3,7 +3,7 @@ from Lemming import Lemming
 
 
 class jeu():
-    def __init__(self, grotte):
+    def __init__(self, file_path):
         """
         Constructeur de la classe jeu. 
         Initialise la grotte avec une grille de cases et une liste vide pour les lemmings.
@@ -11,12 +11,16 @@ class jeu():
         :param grotte: Liste 2D représentant la carte du jeu (grotte), chaque élément est transformé en objet Case.
         """
         # Transformation de chaque élément de la grotte en objet Case
+        with open(file_path, 'r') as file:
+            lines = file.readlines()
+        list_of_lists = [list(line.rstrip('\n')) for line in lines]
+        grotte = list_of_lists
         self.grotte =  [[Case(object) for object in ligne] for ligne in grotte]
         # Liste pour stocker les lemmings
         self.liste_lemming = []
          # Compteur de tours de jeu
         self.tour_actuel = 0 
-
+    
     def ajout_lem_entree(self):
         # Ajout d'un premier lemming dans la première ligne de la grotte
         for i in range(len(self.grotte[0])):
@@ -42,10 +46,12 @@ class jeu():
         Fonction placeholder pour gérer le tour d'un lemming ou d'autres événements du jeu.
         À implémenter : déplacements des lemmings et autres interactions.
         """
+        
         self.liste_lemming[self.tour_actuel].action()
-        self.tour_actuel += 1
-        self.tour_actuel %= len(self.liste_lemming)
-        print(self.tour_actuel)
+        if len(self.liste_lemming) > 0:
+            self.tour_actuel += 1
+            self.tour_actuel %= len(self.liste_lemming)
+            print(self.tour_actuel)
 
     def demarre(self):
         """
@@ -83,17 +89,18 @@ class jeu():
 
 
 # Création d'une instance de jeu avec une grotte (grille) prédéfinie
-jeu = jeu([
-    ['#', ' ', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#','#','#'],  # Ligne 1
-    ['#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',' ',' ', '#'],  # Ligne 2
-    ['#', '#', '#','#','#', ' ', ' ', '#', '#', '#', '#', '#', '#', '#', '#'],  # Ligne 3
-    ['#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#', ' ', ' ', ' ',' ','#'],  # Ligne 4
-    ['#', ' ', ' ', '#', '#', '#', '#', '#', '#', '#', ' ', ' ',' ',' ', '#'],  # Ligne 5
-    ['#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',' ','0'],  # Ligne 6 (sortie marquée par '0')
-    ['#', '#', '#', '#', '#', '#', '#', '#', ' ', ' ', '#', '#', '#','#','#'],  # Ligne 7
-    [' ', ' ', ' ', ' ', ' ', ' ', ' ', '#', ' ', ' ', '#', ' ', ' ',' ',' '],  # Ligne 8
-    [' ', ' ', ' ', ' ', ' ', ' ', ' ', '#', '#', '#', '#', ' ', ' ',' ',' ']   # Ligne 9
-])
+# jeu = jeu([
+#     ['#', ' ', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#','#','#'],  # Ligne 1
+#     ['#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',' ',' ', '#'],  # Ligne 2
+#     ['#', '#', '#','#','#', ' ', ' ', '#', '#', '#', '#', '#', '#', '#', '#'],  # Ligne 3
+#     ['#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#', ' ', ' ', ' ',' ','#'],  # Ligne 4
+#     ['#', ' ', ' ', '#', '#', '#', '#', '#', '#', '#', ' ', ' ',' ',' ', '#'],  # Ligne 5
+#     ['#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',' ','0'],  # Ligne 6 (sortie marquée par '0')
+#     ['#', '#', '#', '#', '#', '#', '#', '#', ' ', ' ', '#', '#', '#','#','#'],  # Ligne 7
+#     [' ', ' ', ' ', ' ', ' ', ' ', ' ', '#', ' ', ' ', '#', ' ', ' ',' ',' '],  # Ligne 8
+#     [' ', ' ', ' ', ' ', ' ', ' ', ' ', '#', '#', '#', '#', ' ', ' ',' ',' ']   # Ligne 9
+# ])
 
-# Démarrage du jeu
+jeu = jeu("ascii_art_list.txt")
+
 jeu.demarre()
