@@ -13,4 +13,4 @@ class Lemming():
         pass
 
     def sort(self):
-        pass
+        Jeu.grotte[self.l][self.c].lemming = None
