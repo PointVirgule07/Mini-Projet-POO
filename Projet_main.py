@@ -16,9 +16,7 @@ class jeu():
         list_of_lists = [list(line.rstrip('\n')) for line in lines]
         grotte = list_of_lists
         self.grotte =  [[Case(object) for object in ligne] for ligne in grotte]
-        # Liste pour stocker les lemmings
         self.liste_lemming = []
-         # Compteur de tours de jeu
         self.tour_actuel = 0 
     
     def ajout_lem_entree(self):
