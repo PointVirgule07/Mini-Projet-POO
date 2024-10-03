@@ -6,28 +6,28 @@ class Case:
   
     def __init__(self, terrain, lemming = None):
         self.__terrain = terrain
-        self.__lemming = lemming
+        self.lemming = lemming
 
     def __str__(self):
         ''' Renvoie une représentation en chaîne de caractères de la case '''
-        if self.__lemming is None:
+        if self.lemming is None:
             return self.__terrain
         else:
-            return self.__lemming.__str__()
+            return self.lemming.__str__()
             
 
     def libre(self):
         ''' Renvoie True si la case est vide et False dans le cas contraire'''
-        return self.__lemming == None and (self.__terrain != "#")
+        return self.lemming == None and (self.__terrain != "#")
 
     def depart(self):
         ''' Suprimme le lemming present dans la case et le renvoie'''
-        temp = self.__lemming 
-        self.__lemming = None
+        temp = self.lemming 
+        self.lemming = None
         return temp
 
     def arrivee(self, lem):
         ''' Permet d'ajouter un lemming dans cette case
         Prend en paramètre un lemming et l'associe à cette case
         '''
-        self.__lemming = lem
+        self.lemming = lem

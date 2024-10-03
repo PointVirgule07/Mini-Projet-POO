@@ -14,7 +14,8 @@ class jeu():
         self.grotte =  [[Case(object) for object in ligne] for ligne in grotte]
         # Liste pour stocker les lemmings
         self.liste_lemming = []
-
+         # Compteur de tours de jeu
+        self.tour_actuel = 0 
     def affiche(self):
         """
         Affiche l'état actuel de la grotte (grille) sur la console.
