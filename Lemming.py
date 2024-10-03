@@ -24,9 +24,9 @@ class Lemming:
     def __str__(self):
         """Renvoie une représentation visuelle du lemming."""
         if self.direction == 1:
-            return ">" 
+            return "\033[31m>\033[37m"
         else:
-            return "<"
+            return "\033[31m<\033[37m"
 
     def action(self):
         """Effectue l'action du lemming selon sa situation dans la grotte."""
