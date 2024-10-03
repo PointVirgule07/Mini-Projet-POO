@@ -11,7 +11,7 @@ class jeu():
         :param grotte: Liste 2D représentant la carte du jeu (grotte), chaque élément est transformé en objet Case.
         """
         # Transformation de chaque élément de la grotte en objet Case
-        self.__grotte =  [[Case(object) for object in ligne] for ligne in grotte]
+        self.grotte =  [[Case(object) for object in ligne] for ligne in grotte]
         # Liste pour stocker les lemmings
         self.liste_lemming = []
 
