@@ -6,7 +6,6 @@ class Interface_graphique:
         self.fenetre = Tk()
     
 
-
     def affichage(self, tableau):
         frame_haut = Frame(self.fenetre, borderwidth=2, relief=GROOVE)
         frame_milieu = Frame(self.fenetre)
@@ -26,9 +25,11 @@ class Interface_graphique:
                 x2, y2 = pas * (colone), pas * (ligne)
                 grille.create_rectangle(x1, y1, x2, y2, fill=couleur[ligne])
 
-
-        self.fenetre.config(background="#FF00FF")
+        #parametre de la fenetre
+        self.fenetre.config(bg="#FF00FF")
         self.fenetre.geometry("500x500")
+        self.fenetre.title("Lemming")
+        self.fenetre.iconbitmap("logo_lemming_game.ico")
 
         grille.pack()
         frame_milieu.pack()
