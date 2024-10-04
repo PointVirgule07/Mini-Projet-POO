@@ -28,12 +28,12 @@ class Jeu:
     def ajout_lemming(self):
         """Ajoute un lemming à l'entrée de la grotte."""
         for i in range(len(self.grotte[0])):
-            case = self.grotte[0][i]
-            if case.est_libre():
-                lemming = Lemming(0, i, self)
-                case.ajouter_lemming(lemming)
-                self.liste_lemming.append(lemming)
-                return
+            case = self.grotte[0][i] # Récupère la ième case à la première ligne
+            if case.est_libre(): # Si la case est libre, ajoute un lemming
+                lemming = Lemming(0, i, self) 
+                case.ajouter_lemming(lemming) 
+                self.liste_lemming.append(lemming) 
+                return # Sort de la méthode après avoir ajouté un lemming
 
     def afficher(self):
         """Affiche la grotte."""
