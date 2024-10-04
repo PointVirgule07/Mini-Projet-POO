@@ -19,6 +19,7 @@ class Jeu:
         self.grotte = self.charger_grotte(fichier)  # Charge la grotte à partir d'un fichier
         self.liste_lemming = []
         self.tour_actuel = 0
+        self.type_tour = 1
 
     def charger_grotte(self, fichier):
         """Charge la grotte à partir d'un fichier texte."""
@@ -40,7 +41,7 @@ class Jeu:
             # Affiche chaque ligne en concaténant les représentations des cases
             print("".join([str(case) for case in ligne]))
 
-    def tour(self):
+    def tour_par_tour(self):
         """Effectue un tour de jeu tout en évitant les erreurs avec une liste vide."""
         if not self.liste_lemming:
             return  # Si aucun lemming, on quitte la méthode pour éviter toute erreur.
@@ -51,6 +52,21 @@ class Jeu:
         # S'assurer que tour_actuel reste dans les limites de la liste
         if self.liste_lemming:  # Vérification que la liste n'est pas vide après l'action
             self.tour_actuel %= len(self.liste_lemming)  # Réinitialise tour_actuel si nécessaire
+
+    def tour(self):
+        '''self.type_tour = 0 pour un tour par tour et 1 pour tous en meme temps
+        '''
+        if self.type_tour == 1:
+            self.tour_par_tour()
+        elif self.type_tour == -1:
+            for i in range(len(self.liste_lemming)):
+                self.tour_par_tour()
+
+
+    def alterner(self, comment):
+        ''' 0 pour un tour par tour et 1 pour tous en meme temps
+        '''
+
 
     def demarrer(self):
         """Démarre la boucle principale du jeu."""
@@ -71,6 +87,9 @@ class Jeu:
 
             elif action == "q": # Quitte le jeu
                 en_jeu = False
+            
+            elif action == "c": # Change le type de passage des tour
+                self.type_tour *= -1 
 
             else:
                 self.tour()  # Effectue le tour de jeu pour le lemming actuel
