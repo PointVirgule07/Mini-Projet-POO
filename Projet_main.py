@@ -72,8 +72,11 @@ class Jeu:
             elif action == "q": # Quitte le jeu
                 en_jeu = False
 
-            else:
+            elif action == "":
                 self.tour()  # Effectue le tour de jeu pour le lemming actuel
+            
+            else:
+                print("\033[31mCommande invalide")
                 
 # Lancement du jeu
 jeu = Jeu("ascii_art_list.txt")  # Initialise le jeu avec le fichier de grotte
