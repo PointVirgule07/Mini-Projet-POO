@@ -1,8 +1,6 @@
 from Case import Case
 from Lemming import Lemming
 
-#bande de fdp chui sur mon tel
-
 class Jeu:
     """
     Classe principale du jeu des lemmings.
