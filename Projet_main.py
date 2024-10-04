@@ -27,7 +27,8 @@ class Jeu:
 
     def ajout_lemming(self):
         """Ajoute un lemming à l'entrée de la grotte."""
-        for i, case in enumerate(self.grotte[0]):
+        for i in range(len(self.grotte[0])):
+            case = self.grotte[0][i]
             if case.est_libre():
                 lemming = Lemming(0, i, self)
                 case.ajouter_lemming(lemming)
