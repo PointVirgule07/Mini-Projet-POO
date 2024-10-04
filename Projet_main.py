@@ -77,7 +77,7 @@ class Jeu:
                 self.tour()  # Effectue le tour de jeu pour le lemming actuel
             
             else:
-                print("\033[31mCommande invalide")
+                print("\033[31mCommande invalide\033[37m")
                 
 # Lancement du jeu
 jeu = Jeu("ascii_art_list.txt")  # Initialise le jeu avec le fichier de grotte
