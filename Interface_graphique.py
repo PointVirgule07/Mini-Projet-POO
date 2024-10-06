@@ -48,54 +48,74 @@
 #         grille.pack()
 #         frame_milieu.pack()
 #         frame_haut.pack()
-
 from tkinter import *
 
-class Interface_graphique:
 
+class Interface_graphique:
 
     def __init__(self, jeu):
         self.jeu = jeu
         self.fenetre = Tk()
         self.fenetre.title("Jeu des Lemmings")
-        
-        self.canevas = Canvas(self.fenetre, width=500, height=500)
-        self.canevas.pack()
+        self.pas = 30
+        self.lemming_image = PhotoImage(file="lemming_image.png")
 
-        self.bouton_ajouter = Button(self.fenetre, text="Ajouter un Lemming", command=self.ajouter_lemming)
-        self.bouton_ajouter.pack()
+        self.titre_principal = Label(self.fenetre, text="Lemming")
+        # Créer un conteneur pour la disposition
+        self.conteneur = Frame(self.fenetre)
+        self.conteneur.pack(expand=True, fill=BOTH)
 
-        self.bouton_quitter = Button(self.fenetre, text="Quitter", command=self.quitter)
-        self.bouton_quitter.pack()
+        # Créer le canevas pour afficher la grotte
+        self.canevas = Canvas(self.conteneur, bg="white")
+        self.canevas.pack(side=LEFT, expand=True, fill=BOTH)
 
-        self.bouton_changer_tour = Button(self.fenetre, text="Changer le mode de tour", command=self.changer_tour, bg="#2aafbb")
-        self.bouton_changer_tour.pack()
+        # Créer le frame pour les boutons
+        frame_droite = Frame(self.conteneur)
+        frame_droite.pack(side=RIGHT, fill=Y)
 
-        self.bouton_tour = Button(self.fenetre, text="Effectuer le tour", command=self.effectuer_tour)
-        self.bouton_tour.pack()
+        # Ajouter les boutons
+        self.bouton_ajouter = Button(frame_droite, text="Ajouter un Lemming", command=self.ajouter_lemming)
+        self.bouton_ajouter.pack(pady=5)
+
+        self.bouton_quitter = Button(frame_droite, text="Quitter", command=self.quitter)
+        self.bouton_quitter.pack(pady=5)
+
+        self.bouton_changer_tour = Button(frame_droite, text="Changer le mode de tour", command=self.changer_tour, bg="#2aafbb")
+        self.bouton_changer_tour.pack(pady=5)
+
+        self.bouton_tour = Button(frame_droite, text="Effectuer le tour", command=self.effectuer_tour)
+        self.bouton_tour.pack(pady=5)
+
+        # Mettre à jour la taille de la fenêtre
+        self.fenetre.geometry(str(len(self.jeu.grotte[0]) * self.pas + 200) + "x" + str(len(self.jeu.grotte) * self.pas + 100))
+
         self.actualiser_affichage()
-
+    
     def actualiser_affichage(self):
+        couleur = {"#": "black",
+                   " ": "white",
+                   "0": "green"}
+
         self.canevas.delete("all") 
-        self.canevas.config(width=self.fenetre.winfo_width(), height=self.fenetre.winfo_height() - 150)
-        pas = self.fenetre.winfo_width()/len(self.jeu.grotte[0])
+        pas = self.canevas.winfo_width() / len(self.jeu.grotte[0])
         for i in range(len(self.jeu.grotte)): 
             ligne = self.jeu.grotte[i] 
-            for j in range(len(ligne)):  
-                case = ligne[j]  
-                couleur = "white" if case.est_libre() else "black"  # Détermine la couleur de la case
-                self.canevas.create_rectangle(j * pas, i * pas, (j + 1) * pas, (i + 1) * pas, fill=couleur)
+            for j in range(len(ligne)): 
+                case = ligne[j]   
+                self.canevas.create_rectangle(j * pas, i * pas, (j + 1) * pas, (i + 1) * pas, fill=couleur[self.jeu.grotte[i][j].get_terrain()])
                 
-                if case.lemming != None:  # Si la case a des lemmings
-                    # Crée un ovale représentant un lemming
-                    self.canevas.create_oval(j * pas + 5, i * pas + 5, j * pas + 15, i * pas + 15, fill="green")
-    
+                if case.lemming != None:
+                    if case.lemming.direction == 1:
+                        self.canevas.create_arc(j * pas, i * pas, j * pas + 30, i * pas + 20, fill="green", extent=180, start=270)
+                    else:
+                        self.canevas.create_arc(j * pas, i * pas, j * pas+30, i * pas+20, fill="red", extent=180, start=90)
+
     def changer_tour(self):
-         self.jeu.type_tour *=-1
+         self.jeu.type_tour *= -1
 
     def ajouter_lemming(self):
-        if len(self.jeu.liste_lemming) == 0:# Si aucun lemming n'est présent on reset le compteur de tour pour ne pas out of range
-                    self.jeu.tour_actuel = 0
+        if len(self.jeu.liste_lemming) == 0:  # Si aucun lemming n'est présent on reset le compteur de tour
+            self.jeu.tour_actuel = 0
         self.jeu.ajout_lemming()
         self.actualiser_affichage()
 

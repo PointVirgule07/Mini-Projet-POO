@@ -37,7 +37,7 @@ class Jeu:
                 return
 
     def afficher(self):
-        """Affiche la grotte."""
+        """Affiche la grotte. A REPRENDRE !!!!!"""
         for ligne in self.grotte:
             # Affiche chaque ligne en concaténant les représentations des cases
             print("".join([str(case) for case in ligne]))
