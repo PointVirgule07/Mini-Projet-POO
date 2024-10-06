@@ -1,5 +1,6 @@
 from Case import Case
 from Lemming import Lemming
+from Interface_graphique import Interface_graphique
 
 class Jeu:
     """
@@ -43,14 +44,13 @@ class Jeu:
 
     def tour_par_tour(self):
         """Effectue un tour de jeu tout en évitant les erreurs avec une liste vide."""
-        if not self.liste_lemming:
+        if self.liste_lemming == []:
             return  # Si aucun lemming, on quitte la méthode pour éviter toute erreur.
-
         self.liste_lemming[self.tour_actuel].action() # Effectue l'action du lemming actuel
         self.tour_actuel += 1
 
         # S'assurer que tour_actuel reste dans les limites de la liste
-        if self.liste_lemming:  # Vérification que la liste n'est pas vide après l'action
+        if self.liste_lemming != []:  # Vérification que la liste n'est pas vide après l'action
             self.tour_actuel %= len(self.liste_lemming)  # Réinitialise tour_actuel si nécessaire
 
     def tour(self):
@@ -63,16 +63,14 @@ class Jeu:
                 self.tour_par_tour()
 
 
-    def alterner(self, comment):
-        ''' 0 pour un tour par tour et 1 pour tous en meme temps
-        '''
-
-
     def demarrer(self):
         """Démarre la boucle principale du jeu."""
         
         self.ajout_lemming()  # Ajoute le premier lemming à la grotte
         en_jeu = True  # État du jeu
+
+        interface = Interface_graphique(self)
+        interface.fenetre.mainloop()
 
         while en_jeu:
             self.afficher()  # Affiche l'état actuel de la grotte
