@@ -5,7 +5,7 @@ from Interface_graphique import Interface_graphique
 class Jeu:
     """
     Classe principale du jeu des lemmings.
-
+    
     Gère la création et l'affichage de la grotte, ainsi que les interactions
     avec les lemmings. Permet d'ajouter des lemmings, d'effectuer des tours
     de jeu et d'afficher l'état actuel de la grotte.
