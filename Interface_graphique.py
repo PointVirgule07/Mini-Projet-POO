@@ -1,55 +1,6 @@
-
-
-# class Interface_graphique:
-
-#     def __init__(self):
-#         self.fenetre = Tk()
-    
-
-#     def affichage(self, tableau):
-
-#         def actualiser_affichage(self):
-#             canevas = Canvas(self.fenetre, width=500, height=500)
-#             canevas.pack()
-#             canevas.delete("all")
-
-#             for i, ligne in enumerate(self.jeu.grotte):
-#                 for j, case in enumerate(ligne):
-#                     couleur = "white" if case.est_libre() else "black"
-#                     canevas.create_rectangle(j * 20, i * 20, (j + 1) * 20, (i + 1) * 20, fill=couleur)
-#                     for lemming in case.lemmings:  # si case a des lemmings
-#                         canevas.create_oval(j * 20 + 5, i * 20 + 5, j * 20 + 15, i * 20 + 15, fill="green")
-
-#         frame_haut = Frame(self.fenetre, borderwidth=2, relief=GROOVE)
-#         frame_milieu = Frame(self.fenetre)
-
-#         titre_principal = Label(frame_haut, text="Lemming", fg="red", font=("Arial", 40))
-#         titre_principal.pack()
-#         sous_titre = Label(frame_haut, text="Jouer jeu lemming")
-#         sous_titre.pack()
-
-#         couleur = {"#": "grey",
-#                    " ": "black",
-#                    "0": "blue"
-#                     }
-        
-#         pas = 800 / len(tableau)
-#         grille = Canvas(self.fenetre) 
-
-
-
-#         #parametre de la fenetre
-#         self.fenetre.config(bg="#FF00FF")
-#         self.fenetre.geometry("500x500")
-#         self.fenetre.title("Lemming")
-#         self.fenetre.iconbitmap("logo_lemming_game.ico")
-
-        
-#         grille.pack()
-#         frame_milieu.pack()
-#         frame_haut.pack()
+# Description: Fichier contenant la classe Interface_graphique qui permet de gérer l'interface graphique du jeu des lemmings
 from tkinter import *
-
+from PIL import Image, ImageTk
 
 class Interface_graphique:
 
@@ -57,10 +8,15 @@ class Interface_graphique:
         self.jeu = jeu
         self.fenetre = Tk()
         self.fenetre.title("Jeu des Lemmings")
-        self.pas = 30
-        self.lemming_image = PhotoImage(file="lemming_image.png")
+        self.fenetre.iconbitmap("logo_lemming_game.ico")
+        # self.fenetre.attributes("-fullscreen", True)  # Ouvrir en plein écran
+        self.pas = 70  # Valeur initiale du pas
+        
+        # Ajouter un attribut pour l'état du mode de tour
+        self.mode_tour = 1  # Peut être 1 ou -1
 
         self.titre_principal = Label(self.fenetre, text="Lemming")
+
         # Créer un conteneur pour la disposition
         self.conteneur = Frame(self.fenetre)
         self.conteneur.pack(expand=True, fill=BOTH)
@@ -80,24 +36,57 @@ class Interface_graphique:
         self.bouton_quitter = Button(frame_droite, text="Quitter", command=self.quitter)
         self.bouton_quitter.pack(pady=5)
 
-        self.bouton_changer_tour = Button(frame_droite, text="Changer le mode de tour", command=self.changer_tour, bg="#2aafbb")
+        self.bouton_changer_tour = Button(frame_droite, text="Lemming par Lemming", command=self.changer_tour, bg="#2aafbb")
         self.bouton_changer_tour.pack(pady=5)
 
         self.bouton_tour = Button(frame_droite, text="Effectuer le tour", command=self.effectuer_tour)
         self.bouton_tour.pack(pady=5)
 
-        # Mettre à jour la taille de la fenêtre
-        self.fenetre.geometry(str(len(self.jeu.grotte[0]) * self.pas + 200) + "x" + str(len(self.jeu.grotte) * self.pas + 100))
-
-        self.actualiser_affichage()
+        # Charger les images pour les lemmings
+        self.image_droite_base = Image.open("lemming_image__droite.png")
+        self.image_gauche_base = Image.open("lemming_image_gauche.png")
     
+        # Redimensionner les images selon la taille des cases
+        self.image_droite = ImageTk.PhotoImage(self.image_droite_base.resize((self.pas, self.pas)))
+        self.image_gauche = ImageTk.PhotoImage(self.image_gauche_base.resize((self.pas, self.pas)))
+
+        # Calculer la taille des cases pour remplir la fenêtre
+        self.calculer_taille_cases()  # Initialiser le calcul des cases
+        self.actualiser_affichage()  # Afficher initialement la grille
+
+        # Lier l'événement de redimensionnement
+        self.fenetre.bind("<Configure>", self.redimensionner)  # Événement de redimensionnement
+
+    def calculer_taille_cases(self):
+        """Calculer la taille des cases pour remplir la fenêtre au maximum."""
+        # Calculer le nombre de colonnes et de lignes
+        nombre_colonnes = len(self.jeu.grotte[0])
+        nombre_lignes = len(self.jeu.grotte)
+
+        # Calculer la taille maximale possible pour chaque case
+        largeur_fenetre = self.fenetre.winfo_width() - 200  # Ajustement pour les boutons
+        hauteur_fenetre = self.fenetre.winfo_height() - 100  # Ajustement pour le titre
+
+        # Assurez-vous que les dimensions de la fenêtre sont positives
+        if largeur_fenetre > 0 and hauteur_fenetre > 0:
+            # Calculer le pas (taille des cases) pour remplir la fenêtre
+            self.pas = min(largeur_fenetre // nombre_colonnes, hauteur_fenetre // nombre_lignes)
+
+            # Redimensionner les images selon la nouvelle taille des cases
+            self.image_droite = ImageTk.PhotoImage(self.image_droite_base.resize((self.pas, self.pas)))
+            self.image_gauche = ImageTk.PhotoImage(self.image_gauche_base.resize((self.pas, self.pas)))
+
+    def redimensionner(self, event):
+        self.calculer_taille_cases()  # Recalculer la taille des cases lors du redimensionnement
+        self.actualiser_affichage()  # Mettre à jour l'affichage avec le nouveau pas
+
     def actualiser_affichage(self):
         couleur = {"#": "black",
                    " ": "white",
                    "0": "green"}
 
         self.canevas.delete("all") 
-        pas = self.canevas.winfo_width() / len(self.jeu.grotte[0])
+        pas = self.pas  # Utiliser le pas calculé
         for i in range(len(self.jeu.grotte)): 
             ligne = self.jeu.grotte[i] 
             for j in range(len(ligne)): 
@@ -106,12 +95,25 @@ class Interface_graphique:
                 
                 if case.lemming != None:
                     if case.lemming.direction == 1:
-                        self.canevas.create_arc(j * pas, i * pas, j * pas + 30, i * pas + 20, fill="green", extent=180, start=270)
+                        # Calculer la position centrée
+                        x_position = j * pas + (pas // 2)  # Décalage pour centrer horizontalement
+                        y_position = i * pas + (pas // 2)  # Décalage pour centrer verticalement
+                        # Afficher l'image pour le lemming allant à droite
+                        self.canevas.create_image(x_position, y_position, anchor="center", image=self.image_droite)
                     else:
-                        self.canevas.create_arc(j * pas, i * pas, j * pas+30, i * pas+20, fill="red", extent=180, start=90)
+                        # Calculer la position centrée
+                        x_position = j * pas + (pas // 2)  # Décalage pour centrer horizontalement
+                        y_position = i * pas + (pas // 2)  # Décalage pour centrer verticalement
+                        # Afficher l'image pour le lemming allant à gauche
+                        self.canevas.create_image(x_position, y_position, anchor="center", image=self.image_gauche)
 
     def changer_tour(self):
-         self.jeu.type_tour *= -1
+        self.jeu.type_tour *= -1
+        # Changer le texte du bouton selon le mode actuel
+        if self.jeu.type_tour == 1:
+            self.bouton_changer_tour.config(text="Lemming par Lemming")
+        else:
+            self.bouton_changer_tour.config(text="Tous les Lemmings en même temps")
 
     def ajouter_lemming(self):
         if len(self.jeu.liste_lemming) == 0:  # Si aucun lemming n'est présent on reset le compteur de tour
@@ -124,4 +126,5 @@ class Interface_graphique:
         self.actualiser_affichage()
 
     def quitter(self):
+        self.jeu.en_jeu = False
         self.fenetre.quit()

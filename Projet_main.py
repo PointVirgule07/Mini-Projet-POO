@@ -21,11 +21,15 @@ class Jeu:
         self.liste_lemming = []
         self.tour_actuel = 0
         self.type_tour = 1
+        self.en_jeu = None
 
     def charger_grotte(self, fichier):
         """Charge la grotte à partir d'un fichier texte."""
         with open(fichier, "r") as f:
             return [[Case(c) for c in ligne.strip()] for ligne in f] #converti chaque caractère en objet Case
+            # .strip() enlève les espaces, tabulations et retours à la ligne en début et fin de chaque ligne
+            # Cela permet de ne garder que les caractères « significatifs » de la ligne.
+
 
     def ajout_lemming(self):
         """Ajoute un lemming à l'entrée de la grotte."""
@@ -38,10 +42,15 @@ class Jeu:
                 return # Sort de la méthode après avoir ajouté un lemming
 
     def afficher(self):
-        """Affiche la grotte. A REPRENDRE !!!!!"""
-        for ligne in self.grotte:
-            # Affiche chaque ligne en concaténant les représentations des cases
-            print("".join([str(case) for case in ligne]))
+        """
+        Affiche l'état actuel de la grotte (grille) sur la console.
+        Chaque ligne de la grille est affichée séparément.
+        """
+        for k in range(len(self.grotte)):
+            print("")  # Saut de ligne après chaque ligne de la grotte
+            for i in range(len(self.grotte[k])):
+                # Affiche chaque case de la ligne sans saut de ligne
+                print(self.grotte[k][i], end="", sep="")
 
     def tour_par_tour(self):
         """Effectue un tour de jeu tout en évitant les erreurs avec une liste vide."""
@@ -68,12 +77,12 @@ class Jeu:
         """Démarre la boucle principale du jeu."""
         
         self.ajout_lemming()  # Ajoute le premier lemming à la grotte
-        en_jeu = True  # État du jeu
+        self.en_jeu = True  # État du jeu
 
         interface = Interface_graphique(self)
         interface.fenetre.mainloop()
 
-        while en_jeu:
+        while self.en_jeu:
             self.afficher()  # Affiche l'état actuel de la grotte
             action = input("l pour ajouter un lemming, q pour quitter, entrer pour continuer: ")
 
@@ -85,7 +94,7 @@ class Jeu:
                 self.ajout_lemming()
 
             elif action == "q": # Quitte le jeu
-                en_jeu = False
+                self.en_jeu = False
             
             elif action == "c": # Change le type de passage des tour
                 self.type_tour *= -1 
