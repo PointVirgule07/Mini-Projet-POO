@@ -114,7 +114,7 @@ class Interface_graphique:
         if pygame_available:
             try:
                 pygame.mixer.init()
-                pygame.mixer.music.set_volume(0.5)
+                pygame.mixer.music.set_volume(0.2)
                 # Charger la musique et la jouer en boucle
                 lib=[get_resource_path("ressources/musique/1.mp3"),get_resource_path("ressources/musique/2.mp3"),get_resource_path("ressources/musique/3.mp3"),get_resource_path("ressources/musique/4.mp3"),get_resource_path("ressources/musique/5.mp3"),get_resource_path("ressources/musique/6.mp3"),get_resource_path("ressources/musique/7.mp3")]
                 pygame.mixer.music.load(choice(lib))  # Charger le fichier de musique
