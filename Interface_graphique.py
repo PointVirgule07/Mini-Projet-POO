@@ -1,8 +1,16 @@
 # Description: Fichier contenant la classe Interface_graphique qui permet de gérer l'interface graphique du jeu des lemmings
 from tkinter import *
-from PIL import Image, ImageTk
-import pygame
 from random import choice
+
+try:
+    import pygame
+    pygame_available = True
+except ImportError:
+    pygame_available = False
+try:
+    from PIL import Image, ImageTk
+except ImportError:
+    from ressources.vendor.PIL import Image, ImageTk
 
 class Interface_graphique:
 
@@ -79,7 +87,8 @@ class Interface_graphique:
         self.fenetre.protocol("WM_DELETE_WINDOW", self.quitter)  # Lier la méthode quitter à l'événement de fermeture de la fenêtre
     
     def lancer_musique(self):
-        try:
+        if pygame_available:
+            try:
                 pygame.mixer.init()
                 # Charger la musique et la jouer en boucle
                 lib=["ressources/musique/1.mp3","ressources/musique/2.mp3","ressources/musique/3.mp3","ressources/musique/4.mp3","ressources/musique/5.mp3","ressources/musique/6.mp3","ressources/musique/7.mp3"]
