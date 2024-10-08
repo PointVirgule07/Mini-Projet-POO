@@ -21,6 +21,8 @@ class Interface_graphique:
         self.fenetre.iconbitmap("ressources/images/logo_lemming_game.ico")
         self.fenetre.geometry("800x600")
         self.fenetre.minsize(400, 300)
+        self.fenetre.config(bg="#26c17d")
+        self.mute = False
 
         # Lancer la musique de fond
         self.lancer_musique()
@@ -30,14 +32,15 @@ class Interface_graphique:
         
         # Attribut pour l'écran d'accueil
         self.ecran_accueil = Frame(self.fenetre)
+        self.ecran_accueil.config(bg="#26c17d")
         self.ecran_accueil.pack(expand=True, fill=BOTH)
 
         # Ajouter une image sur l'écran d'accueil
-        image_accueil = Image.open("ressources/images/logo_lemming_game.ico")  # Assurez-vous que cette image existe
+        image_accueil = Image.open("ressources/images/logo_lemming_game.png")
         image_accueil = ImageTk.PhotoImage(image_accueil.resize((400, 300)))  # Redimensionner selon votre besoin
 
-        self.label_image = Label(self.ecran_accueil, image=image_accueil)
-        self.label_image.image = image_accueil  # Nécessaire pour éviter la collecte du garbage
+        self.label_image = Label(self.ecran_accueil, image=image_accueil, bg="#26c17d")
+        self.label_image.image = image_accueil
         self.label_image.pack(pady=50)
 
         # Ajouter un bouton "Jouer" sur l'écran d'accueil
@@ -51,10 +54,10 @@ class Interface_graphique:
         self.conteneur = Frame(self.fenetre)
 
         # Créer le canevas pour afficher la grotte
-        self.canevas = Canvas(self.conteneur, bg="white")
+        self.canevas = Canvas(self.conteneur, bg="#26c17d", highlightthickness=0)
 
         # Créer le frame pour les boutons
-        frame_droite = Frame(self.conteneur)
+        frame_droite = Frame(self.conteneur, bg="#26c17d")
         frame_droite.pack(side=RIGHT, fill=Y)
 
         # Ajouter les bouton
@@ -64,11 +67,18 @@ class Interface_graphique:
         self.bouton_changer_tour = Button(frame_droite, text="Lemming par Lemming", command=self.changer_tour, bg="#2aafbb")
         self.bouton_changer_tour.pack(pady=5)
         
-        self.bouton_ajouter = Button(frame_droite, text="Ajouter un Lemming", command=self.ajouter_lemming)
+        self.bouton_ajouter = Button(frame_droite, text="Ajouter un Lemming", command=self.ajouter_lemming, bg="green")
         self.bouton_ajouter.pack(pady=5)
 
-        self.bouton_tour = Button(frame_droite, text="Effectuer le tour", command=self.effectuer_tour)
-        self.bouton_tour.pack(pady=5)
+        self.bouton_tour = Button(frame_droite, text="Effectuer le tour", command=self.effectuer_tour,bg="green")
+        self.bouton_tour.pack( pady=5)
+
+        self.bouton_mute_music = Button(frame_droite, text="Mute Music", command=self.mute_music,bg="green")
+        if pygame_available: self.bouton_mute_music.pack(side=BOTTOM,pady=5)
+
+        self.bouton_mute_sound = Button(frame_droite, text="Mute Sound", command=self.mute_sound,bg="green")
+        self.bouton_mute_sound.pack(side=BOTTOM, pady=5)
+
 
         # Charger les images pour les lemmings
         self.image_droite_base = Image.open("ressources/images/lemming_image__droite.png")
@@ -84,12 +94,13 @@ class Interface_graphique:
 
         # Lier l'événement de redimensionnement
         self.fenetre.bind("<Configure>", self.redimensionner)  # Lier la méthode redimensionner à l'événement de redimensionnement de la fenêtre
-        self.fenetre.protocol("WM_DELETE_WINDOW", self.quitter)  # Lier la méthode quitter à l'événement de fermeture de la fenêtre
+        # self.fenetre.protocol("WM_DELETE_WINDOW", self.quitter)  # Lier la méthode quitter à l'événement de fermeture de la fenêtre
     
     def lancer_musique(self):
         if pygame_available:
             try:
                 pygame.mixer.init()
+                pygame.mixer.music.set_volume(0.5)
                 # Charger la musique et la jouer en boucle
                 lib=["ressources/musique/1.mp3","ressources/musique/2.mp3","ressources/musique/3.mp3","ressources/musique/4.mp3","ressources/musique/5.mp3","ressources/musique/6.mp3","ressources/musique/7.mp3"]
                 pygame.mixer.music.load(choice(lib))  # Charger le fichier de musique
@@ -106,11 +117,12 @@ class Interface_graphique:
 
     def lancer_jeu(self):
             """Cache l'écran d'accueil et lance l'interface du jeu."""
+            if pygame_available and not self.mute: pygame.mixer.Sound.play(pygame.mixer.Sound("ressources/musique/goofy-slip.mp3"))
             self.ecran_accueil.pack_forget()  # Masquer l'écran d'accueil
 
             # Afficher le conteneur principal (canevas + boutons)
             self.conteneur.pack(expand=True, fill=BOTH)
-            self.canevas.pack(side=LEFT, expand=True, fill=BOTH)
+            self.canevas.pack(side=RIGHT, expand=True, fill=BOTH)
 
             self.fenetre.focus_set()  # Assurer que la fenêtre a le focus
             self.fenetre.bind("<space>", lambda event: self.effectuer_tour())  # Bouge les lemmings avec la barre espace
@@ -179,15 +191,32 @@ class Interface_graphique:
             self.bouton_changer_tour.config(text="Tous les Lemmings en même temps")
 
     def ajouter_lemming(self):
+        if pygame_available and not self.mute:pygame.mixer.Sound.play(pygame.mixer.Sound("ressources/musique/spawn.mp3"))
         if len(self.jeu.liste_lemming) == 0:
             self.jeu.tour_actuel = 0
         self.jeu.ajout_lemming()
         self.actualiser_affichage()
 
     def effectuer_tour(self):
+        if pygame_available and not self.mute:pygame.mixer.Sound.play(pygame.mixer.Sound("ressources/musique/pop.mp3"))
         self.jeu.tour()
         self.actualiser_affichage()
 
     def quitter(self):
         self.jeu.en_jeu = False
         self.fenetre.quit()
+
+    def mute_music(self):
+        if pygame.mixer.music.get_busy():
+            pygame.mixer.music.pause()
+            self.bouton_mute_music.config(text="Démute Music")
+        else:  
+            pygame.mixer.music.unpause()
+            self.bouton_mute_music.config(text="Muter Music")
+
+    def mute_sound(self):
+        self.mute = not self.mute
+        if self.mute:
+            self.bouton_mute_sound.config(text="Démute Sound")
+        else:
+            self.bouton_mute_sound.config(text="Muter Sound")
