@@ -15,7 +15,6 @@ class Interface_graphique:
         self.fenetre.minsize(400, 300)
 
         # Lancer la musique de fond
-        pygame.mixer.init()
         self.lancer_musique()
 
         # self.fenetre.attributes("-fullscreen", True)  # Ouvrir en plein écran
@@ -80,13 +79,21 @@ class Interface_graphique:
         self.fenetre.protocol("WM_DELETE_WINDOW", self.quitter)  # Lier la méthode quitter à l'événement de fermeture de la fenêtre
     
     def lancer_musique(self):
-            """Lancer la musique en arrière-plan."""
-            # Charger la musique et la jouer en boucle
-            lib=["ressources/musique/1.mp3","ressources/musique/2.mp3","ressources/musique/3.mp3","ressources/musique/4.mp3","ressources/musique/5.mp3","ressources/musique/6.mp3","ressources/musique/7.mp3"]
-            pygame.mixer.music.load(choice(lib))  # Charger le fichier de musique
-            pygame.mixer.music.play()
-            for i in range(10):
-                pygame.mixer.music.queue(choice(lib))
+        try:
+                pygame.mixer.init()
+                # Charger la musique et la jouer en boucle
+                lib=["ressources/musique/1.mp3","ressources/musique/2.mp3","ressources/musique/3.mp3","ressources/musique/4.mp3","ressources/musique/5.mp3","ressources/musique/6.mp3","ressources/musique/7.mp3"]
+                pygame.mixer.music.load(choice(lib))  # Charger le fichier de musique
+                pygame.mixer.music.play()
+                for _ in range(10):
+                    pygame.mixer.music.queue(choice(lib))
+
+            except pygame.error as e:
+                print(f"Erreur lors du chargement de la musique : {e}")
+            except FileNotFoundError:
+                print("Fichier audio non trouvé. Assurez-vous que les fichiers de musique existent.")
+            except Exception as e:
+                print(f"Une erreur inattendue s'est produite : {e}")
 
     def lancer_jeu(self):
             """Cache l'écran d'accueil et lance l'interface du jeu."""
