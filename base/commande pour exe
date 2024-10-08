@@ -1,0 +1,1 @@
+pyinstaller --onefile --windowed --add-data "ressources;ressources" --icon=ressources\images\logo_lemming_game.ico Projet_main.py
